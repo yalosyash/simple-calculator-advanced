@@ -1,1 +1,1 @@
-## Расширение предыдущего [калькулятора](https://github.com/yalosyash/calculator)
+## Переписываю и расширяю [предыдущий](https://github.com/yalosyash/calculator) калькулятор
