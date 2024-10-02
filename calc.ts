@@ -1,17 +1,19 @@
 function calc(example: string): number {
-  if (example.search(/[^1-9() +-\/*]/g) !== -1) {
-    throw new Error("Некорректное значение");
+  if (example.search(/[^0-9() +-\/*]/g) !== -1) {
+    throw new Error("Некорректное значение!");
   }
 
-  const changeExample: string = example.replaceAll(",", ".").replaceAll(" ", "");
+  const replacedCharsExample: string = example
+    .replaceAll(",", ".")
+    .replaceAll(" ", "");
 
   const separateStrToArr = (str: string): string[] => {
     let arr: string[] = [];
-    let listOfSeparatorSymbols: string[] = ["(", ")", "*", "/", "-", "+"];
+    let listOfSeparatorChars: string[] = ["(", ")", "*", "/", "-", "+"];
     let currentElement: string = "";
 
     for (let i: number = 0; i < str.length; i++) {
-      if (listOfSeparatorSymbols.includes(str[i])) {
+      if (listOfSeparatorChars.includes(str[i])) {
         if (currentElement !== "") {
           arr.push(currentElement);
         }
@@ -21,42 +23,96 @@ function calc(example: string): number {
         currentElement += str[i];
       }
     }
+    if (currentElement !== "") {
+      arr.push(currentElement);
+    }
     return arr;
   };
 
-  const separatedArr: string[] = separateStrToArr(changeExample);
+  const separatedArr: string[] = separateStrToArr(replacedCharsExample);
 
   const bracketsIsMatch = (arr: string[]): boolean => {
-    // const countOfBrackets = (bracket: string): number => arr.filter((el) => el === bracket).length
-    // return countOfBrackets('(') === countOfBrackets(')');
     let bracketsCount: number = 0;
+
     for (const el of arr) {
-      if(el === '('){
+      if (el === "(") {
         bracketsCount++;
-      } else if(el === ')'){
+      } else if (el === ")") {
         bracketsCount--;
-      } 
-      if(bracketsCount < 0){
+      }
+      if (bracketsCount < 0) {
         return false;
       }
     }
     return bracketsCount === 0;
+  };
+
+  const errorOfBrackets = (): void => {
+    throw new Error("Скобки расставлены неверно!");
+  };
+
+  if (!bracketsIsMatch(separatedArr)) {
+    errorOfBrackets();
   }
 
-  if(!bracketsIsMatch(separatedArr)){
-    throw new Error('Лишние скобки')
-  }
-  // const findAction = (arr: string[]): number => {
-  //   const indexElement = (char: string): number => arr.findIndex((el) => el === char)
-  //   if(indexElement(')')){
-      //TODO синтаксический анализатор
-  //   }
-  // }
+  const solveExample = (arr: string[]): number => {
+    let currentIndex: number = 0;
+    let answer: number = num();
 
-  console.log(separatedArr);
-  console.log();
-  return 0;
+    function num(): number {
+      let result: number = last();
+
+      while (currentIndex < arr.length) {
+        if (arr[currentIndex] === "+") {
+          currentIndex++;
+          result += last();
+        } else if (arr[currentIndex] === "-") {
+          currentIndex++;
+          result -= last();
+        } else if (arr[currentIndex] === "(") {
+          errorOfBrackets();
+        } else {
+          return result;
+        }
+      }
+      return result;
+    }
+
+    function last(): number {
+      let result: number = brackets();
+
+      if (arr[currentIndex] === "*") {
+        currentIndex++;
+        result *= brackets();
+      } else if (arr[currentIndex] === "/") {
+        currentIndex++;
+        result /= brackets();
+      }
+      return result;
+    }
+
+    function brackets(): number {
+      let result: number = 1;
+
+      if (arr[currentIndex] === "-") {
+        result *= -1;
+      }
+
+      if (arr[currentIndex] === "(") {
+        currentIndex++;
+        result *= num();
+        if (arr[currentIndex] !== ")") {
+          errorOfBrackets();
+        }
+        currentIndex++;
+        return result;
+      }
+
+      result = result * parseFloat(arr[currentIndex]);
+      currentIndex++;
+      return result;
+    }
+    return answer;
+  };
+  return solveExample(separatedArr);
 }
-
-console.log(calc("2,2 * (5 - (1 + 5.2) / 6,1)")); // 8
-// console.log(calc("363636+484884*362662-744774/2626626+(252662-47773*(362662+466363))-277373*(3737-27272)")); //142772579735.71646
