@@ -1,4 +1,4 @@
-[![Run Tests CI](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yml/badge.svg)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yml)
+[![CI (push)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml/badge.svg)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml)
 
 # Функция строкового калькулятора
 
