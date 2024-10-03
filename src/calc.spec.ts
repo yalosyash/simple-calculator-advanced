@@ -45,7 +45,7 @@ describe("calc", function () {
   it("should return 9", function () {
     expect(calc("(5 + (3+2)) - 1")).toBe(9);
   });
-  it.only("should return 9", function () {
+  it("should return 9", function () {
     expect(calc("3.2+2,1")).toBe(5.300000000000001);
   });
 });
