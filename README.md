@@ -1,3 +1,5 @@
+[![Run Tests CI](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yml/badge.svg)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yml)
+
 # Функция строкового калькулятора
 
 Функция принимает на вход выражение вида `string`, возвращая ответ в виде `number`.

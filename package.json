@@ -2,7 +2,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "coverage": "jest --coverage --watch"
+    "coverage": "jest --coverage"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
