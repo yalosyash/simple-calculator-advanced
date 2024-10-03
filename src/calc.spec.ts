@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import { calc } from "../calc";
+import { calc } from "./calc";
 describe("calc", function () {
   it("should return 5", function () {
     expect(calc("3+2")).toBe(5);
