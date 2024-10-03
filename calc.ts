@@ -1,5 +1,5 @@
-function calc(example: string): number {
-  if (example.search(/[^0-9() +-\/*]/g) !== -1) {
+export function calc(example: string): number {
+  if (example.search(/[^0-9() +\-\/*\.\,]/g) !== -1) {
     throw new Error("Некорректное значение!");
   }
 
@@ -7,112 +7,114 @@ function calc(example: string): number {
     .replaceAll(",", ".")
     .replaceAll(" ", "");
 
-  const separateStrToArr = (str: string): string[] => {
-    let arr: string[] = [];
-    let listOfSeparatorChars: string[] = ["(", ")", "*", "/", "-", "+"];
-    let currentElement: string = "";
-
-    for (let i: number = 0; i < str.length; i++) {
-      if (listOfSeparatorChars.includes(str[i])) {
-        if (currentElement !== "") {
-          arr.push(currentElement);
-        }
-        arr.push(str[i]);
-        currentElement = "";
-      } else {
-        currentElement += str[i];
-      }
-    }
-    if (currentElement !== "") {
-      arr.push(currentElement);
-    }
-    return arr;
-  };
-
   const separatedArr: string[] = separateStrToArr(replacedCharsExample);
-
-  const bracketsIsMatch = (arr: string[]): boolean => {
-    let bracketsCount: number = 0;
-
-    for (const el of arr) {
-      if (el === "(") {
-        bracketsCount++;
-      } else if (el === ")") {
-        bracketsCount--;
-      }
-      if (bracketsCount < 0) {
-        return false;
-      }
-    }
-    return bracketsCount === 0;
-  };
-
-  const errorOfBrackets = (): void => {
-    throw new Error("Скобки расставлены неверно!");
-  };
 
   if (!bracketsIsMatch(separatedArr)) {
     errorOfBrackets();
   }
 
-  const solveExample = (arr: string[]): number => {
-    let currentIndex: number = 0;
-    let answer: number = num();
+  return solveExample(separatedArr);
+}
 
-    function num(): number {
-      let result: number = last();
+function bracketsIsMatch(arr: string[]): boolean {
+  let bracketsCount: number = 0;
 
-      while (currentIndex < arr.length) {
-        if (arr[currentIndex] === "+") {
-          currentIndex++;
-          result += last();
-        } else if (arr[currentIndex] === "-") {
-          currentIndex++;
-          result -= last();
-        } else if (arr[currentIndex] === "(") {
-          errorOfBrackets();
-        } else {
-          return result;
-        }
-      }
-      return result;
+  for (const el of arr) {
+    if (el === "(") {
+      bracketsCount++;
+    } else if (el === ")") {
+      bracketsCount--;
     }
-
-    function last(): number {
-      let result: number = brackets();
-
-      if (arr[currentIndex] === "*") {
-        currentIndex++;
-        result *= brackets();
-      } else if (arr[currentIndex] === "/") {
-        currentIndex++;
-        result /= brackets();
-      }
-      return result;
+    if (bracketsCount < 0) {
+      return false;
     }
+  }
+  return bracketsCount === 0;
+}
 
-    function brackets(): number {
-      let result: number = 1;
+function errorOfBrackets(): void {
+  throw new Error("Скобки расставлены неверно!");
+}
 
-      if (arr[currentIndex] === "-") {
-        result *= -1;
+function separateStrToArr(str: string): string[] {
+  let arr: string[] = [];
+  let listOfSeparatorChars: string[] = ["(", ")", "*", "/", "-", "+"];
+  let currentElement: string = "";
+
+  for (let i: number = 0; i < str.length; i++) {
+    if (listOfSeparatorChars.includes(str[i])) {
+      if (currentElement !== "") {
+        arr.push(currentElement);
       }
+      arr.push(str[i]);
+      currentElement = "";
+    } else {
+      currentElement += str[i];
+    }
+  }
+  if (currentElement !== "") {
+    arr.push(currentElement);
+  }
+  return arr;
+}
 
-      if (arr[currentIndex] === "(") {
+function solveExample(arr: string[]): number {
+  let currentIndex: number = 0;
+  let answer: number = num();
+
+  function num(): number {
+    let result: number = last();
+
+    while (currentIndex < arr.length) {
+      if (arr[currentIndex] === "+") {
         currentIndex++;
-        result *= num();
-        if (arr[currentIndex] !== ")") {
-          errorOfBrackets();
-        }
+        result += last();
+      } else if (arr[currentIndex] === "-") {
         currentIndex++;
+        result -= last();
+      } else if (arr[currentIndex] === "(") {
+        errorOfBrackets();
+      } else {
         return result;
       }
+    }
+    return result;
+  }
 
-      result = result * parseFloat(arr[currentIndex]);
+  function last(): number {
+    let result: number = brackets();
+
+    if (arr[currentIndex] === "*") {
+      currentIndex++;
+      result *= brackets();
+    } else if (arr[currentIndex] === "/") {
+      currentIndex++;
+      result /= brackets();
+    }
+    return result;
+  }
+
+  function brackets(): number {
+    let result: number = 1;
+
+    if (arr[currentIndex] === "-") {
+      result *= -1;
+      currentIndex++;
+    }
+
+    if (arr[currentIndex] === "(") {
+      currentIndex++;
+      result *= num();
+      if (arr[currentIndex] !== ")") {
+        errorOfBrackets();
+      }
       currentIndex++;
       return result;
     }
-    return answer;
-  };
-  return solveExample(separatedArr);
+
+    result = result * parseFloat(arr[currentIndex]);
+    currentIndex++;
+    return result;
+  }
+  return answer;
 }
