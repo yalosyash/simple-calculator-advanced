@@ -8,7 +8,6 @@ export function calc(example: string): number {
     .replaceAll(" ", "");
 
   const separatedArr: string[] = separateStrToArr(replacedCharsExample);
-
   if (!bracketsIsMatch(separatedArr)) {
     errorOfBrackets();
   }
@@ -84,12 +83,16 @@ function solveExample(arr: string[]): number {
   function last(): number {
     let result: number = brackets();
 
-    if (arr[currentIndex] === "*") {
-      currentIndex++;
-      result *= brackets();
-    } else if (arr[currentIndex] === "/") {
-      currentIndex++;
-      result /= brackets();
+    while (currentIndex < arr.length) {
+      if (arr[currentIndex] === "*") {
+        currentIndex++;
+        result *= brackets();
+      } else if (arr[currentIndex] === "/") {
+        currentIndex++;
+        result /= brackets();
+      } else {
+        return result;
+      }
     }
     return result;
   }
