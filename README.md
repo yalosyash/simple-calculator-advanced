@@ -1,10 +1,10 @@
-[![CI (push)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml/badge.svg)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml)
+[![Run Jest tests in CI](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml/badge.svg)](https://github.com/yalosyash/simple-calculator-advanced/actions/workflows/ci.yaml)
 
 # Функция строкового калькулятора
 
-Функция принимает на вход выражение вида `string`, возвращая ответ в виде `number`.
+Функция принимает на вход выражение типа `string`, возвращая ответ типа `number`.
 
-Пример работы:
+**Пример работы:**
 ```
 calc("2,2 * (5 - (1 + 5.2) / 6,1)"); // 8.76393442622951
 calc("(5.5 + 15.2) - 0,7"); // 20
