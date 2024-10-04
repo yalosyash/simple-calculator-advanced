@@ -133,11 +133,11 @@ describe("calc", function () {
     expect(calc("14-(5+(5-3))")).toBe(7);
   });
 
-  it("Should solve ((5+3)-5)+4= 7", function () {
+  it("Should solve ((5+3)-5)+4=7", function () {
     expect(calc("((5+3)-5)+4")).toBe(7);
   });
 
-  it("Should solve (5+(5-3)) = 7", function () {
+  it("Should solve (5+(5-3))=7", function () {
     expect(calc("(10-(5+3))+5")).toBe(7);
   });
 
